@@ -17,10 +17,10 @@ contract WeibeiSale is StandardToken, Pausable {
     uint weiReceived;
     uint coinSent;
   }
-	mapping(address => Backer) public backers;
+  mapping(address => Backer) public backers;
 
   /* Minimum ETH allowed to invest */
-	uint public constant MIN_INVEST_ETHER = 50 finney;
+  uint public constant MIN_INVEST_ETHER = 50 finney;
 
   string public constant name = "Weibei";
   string public constant symbol = "WBC";
@@ -38,18 +38,18 @@ contract WeibeiSale is StandardToken, Pausable {
   address public tokenBank;
 
   /* Number of Ether received (in Wei unit) */
-	uint public totalEtherWeiReceived;
+  uint public totalEtherWeiReceived;
   /* Number of Ether received (in Ether unit) */
-	uint public totalEtherReceived;
-	/* Number of Weibei sent to Ether contributors */
-	uint public totalWeibeiSent;
+  uint public totalEtherReceived;
+  /* Number of Weibei sent to Ether contributors */
+  uint public totalWeibeiSent;
 
-	bool public isSaleOn;
+  bool public isSaleOn;
 
   /*
-	 * Event
-	*/
-	event LogWeibeiSale(address addr, uint receivedEth, uint weibeiSent);
+   * Event
+  */
+  event LogWeibeiSale(address addr, uint receivedEth, uint weibeiSent);
 
   // Constructor
   function WeibeiSale(address _etherBank, address _tokenBank, uint _totalSupply, uint _maxCap, uint _price) {
@@ -62,18 +62,18 @@ contract WeibeiSale is StandardToken, Pausable {
   }
 
   /*
-	 * To start ICO / Pre-ICO
-	 */
-	function startSale() onlyOwner {
-		isSaleOn = true;
-	}
+   * To start ICO / Pre-ICO
+   */
+  function startSale() onlyOwner {
+    isSaleOn = true;
+  }
 
   /*
-	 * To end ICO / Pre-ICO
-	 */
-	function endSale() onlyOwner {
-		isSaleOn = false;
-	}
+   * To end ICO / Pre-ICO
+   */
+  function endSale() onlyOwner {
+    isSaleOn = false;
+  }
 
   /**
    * Receives ether and sends the appropriate number of WBC tokens to the
@@ -109,48 +109,48 @@ contract WeibeiSale is StandardToken, Pausable {
 
     Backer backer = backers[recipient];
     backer.coinSent = backer.coinSent.add(tokens);
-		backer.weiReceived = backer.weiReceived.add(msg.value);
+    backer.weiReceived = backer.weiReceived.add(msg.value);
 
     totalEtherWeiReceived = totalEtherWeiReceived.add(msg.value);
     totalEtherReceived = totalEtherWeiReceived.div(1 ether);
-		totalWeibeiSent = totalWeibeiSent.add(tokens);
+    totalWeibeiSent = totalWeibeiSent.add(tokens);
 
     // Logs event.
-		LogWeibeiSale(recipient, msg.value, tokens);
+    LogWeibeiSale(recipient, msg.value, tokens);
   }
 
-	/**
-	 * Allow to change the ether bank address in the case of emergency.
-	 */
-	function setEtherBank(address _addr) onlyOwner public {
-		if (_addr == address(0)) {
+  /**
+   * Allow to change the ether bank address in the case of emergency.
+   */
+  function setEtherBank(address _addr) onlyOwner public {
+    if (_addr == address(0)) {
       throw;
     }
-		etherBank = _addr;
-	}
+    etherBank = _addr;
+  }
 
   /**
-	 * Allow to change the token bank address in the case of emergency.
-	 */
-	function setTokenBank(address _addr) onlyOwner public {
-		if (_addr == address(0)) {
+   * Allow to change the token bank address in the case of emergency.
+   */
+  function setTokenBank(address _addr) onlyOwner public {
+    if (_addr == address(0)) {
       throw;
     }
-		tokenBank = _addr;
-	}
+    tokenBank = _addr;
+  }
 
   /**
-	 * Allow to adjust maxCap after Pre-ICO, for regular ICO.
-	 */
-	function setMaxCap(uint _newmax) onlyOwner public {
-		maxCap = _newmax;
-	}
+   * Allow to adjust maxCap after Pre-ICO, for regular ICO.
+   */
+  function setMaxCap(uint _newmax) onlyOwner public {
+    maxCap = _newmax;
+  }
 
   /*
-	 * Allow to adjust price after Pre-ICO, for regular ICO.
-	*/
-	function setPrice(uint _price) onlyOwner public {
+   * Allow to adjust price after Pre-ICO, for regular ICO.
+  */
+  function setPrice(uint _price) onlyOwner public {
     price = _price;
-	}
+  }
 
 }
